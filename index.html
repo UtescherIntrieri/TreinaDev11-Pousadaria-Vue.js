@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="index.css">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <h1>Pousadaria</h1>
+    <h2>Pousadas Disponíveis</h2>
+    <input type="text" v-model="searchInns" placeholder = "Pesquise uma Pousada">
+     <button v-on:click="getData">Pesquisar</button>
+    <div id="space-around">
+      <div v-for="inn in innsResult">
+        <div>
+          <h3>{{inn.brand_name}}</h3>
+          <h4>{{inn.city}} - {{inn.state}}</h4>
+        </div>
+      </div>
+    </div>
+    <h3>{{rooms}}</h3>
+  </div>
+
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

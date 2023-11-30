@@ -1,0 +1,17 @@
+#space-around {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px;
+}
+
+#space-around-nowrap {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+nav input {
+  width: 15%;
+}
