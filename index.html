@@ -11,7 +11,9 @@
 <body>
   <div id="page-content-wrapper">
     <div class="main-content" id="app" v-cloak>
-      <p id="backbtn"><a href="#" @click.prevent="currentPage = previousPage">←</a></p>
+      <span v-if="previousPage != currentPage">
+        <p id="backbtn"><a href="" @click.prevent="currentPage = previousPage">←</a></p>
+      </span>
       <div id="navbar">
         <h1><a href="#" @click.prevent="currentPage = 'index'">Pousadaria</a></h1>
       </div>
@@ -46,7 +48,7 @@
           <h3 id="space-around">Quartos Disponíveis</h3>
           <div v-for="room in rooms" id="space-around">
             <div>
-              <h3>{{room.name}}</h3>
+              <h3 class="page-title">{{room.name}}</h3>
               <h3>{{room.description}}</h3>
               <strong>Tamanho: </strong>{{room.dimension}}m² <br>
               <strong>Capacidade: </strong>{{room.capacity}} pessoas <br>
@@ -58,6 +60,7 @@
               <strong>Cofre: </strong>{{room.safe_box}} <br>
               <strong>Acessível: </strong>{{room.accessible}} <br>
               <strong>Diária: </strong>R${{room.price}} <br>
+              <strong><a href="#" @click.prevent="previousPage = currentPage;currentPage = 'room';roomId = room.id;innId = room.inn_id">Orçar Reserva</a></strong>
             </div>
           </div>
         </div>
@@ -65,12 +68,31 @@
           <h3>Nenhum Quarto Disponível</h3>
         </div>
       </div>
-        <!-- /Inn -->
+      <!-- /Inn -->
       
       <!-- Room -->
-      <div class="container-fluid" v-if="currentPage === 'Bar'">
-        <h3 class="page-title">{{currentPage}}</h3>
-        Bar section
+      <div class="container-fluid" v-if="currentPage === 'room'">
+        <h3 class="page-title">Orçar Reserva</h3>
+        <label for="arriveDate">Data da primeira diária </label>
+        <input type="date" v-model="arriveDate" name="arriveDate" id="arriveDate"> <br>
+        <label for="leaveDate">Data da última diária </label>
+        <input type="date" v-model="leaveDate" name="leaveDate" id="leaveDate"> <br>
+        <input type="number" v-model="groupSize" placeholder="Número de Pessoas"> <br>
+        <strong><a href="#" @click.prevent="previousPage = currentPage;sendCheck = true" v-on:click="checkRoom(innId, roomId, arriveDate, leaveDate, groupSize)">Enviar</a></strong>
+        <div class="container-fluid" v-if="sendCheck === true">
+          <br>
+          <div v-if="reservation.errors">
+            <div v-for="errors in reservation.errors">
+              <div v-for="error in errors">
+                <strong>Erro: </strong>{{error}}
+              </div>
+            </div>
+          </div>
+          <div v-if="reservation.total_price">
+            <strong>Reserva Disponível</strong> <br>
+            <strong>Preço Total: </strong>{{reservation.total_price}}
+          </div>
+        </div>
       </div>
       <!-- /Room -->
     </div>
