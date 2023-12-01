@@ -1,29 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="index.css">
   <title>Document</title>
 </head>
+
 <body>
-  <div id="app">
-    <h1>Pousadaria</h1>
-    <h2>Pousadas Disponíveis</h2>
-    <input type="text" v-model="searchInns" placeholder = "Pesquise uma Pousada">
-     <button v-on:click="getData">Pesquisar</button>
-    <div id="space-around">
-      <div v-for="inn in innsResult">
-        <div>
-          <h3>{{inn.brand_name}}</h3>
-          <h4>{{inn.city}} - {{inn.state}}</h4>
+  <div id="page-content-wrapper">
+    <div class="main-content" id="app" v-cloak>
+      <p id="backbtn"><a href="#" @click.prevent="currentPage = previousPage">←</a></p>
+      <div id="navbar">
+        <h1><a href="#" @click.prevent="currentPage = 'index'">Pousadaria</a></h1>
+      </div>
+      
+      <!-- Index -->
+      <div class="container-fluid" v-if="currentPage === 'index'">
+        <div id="title1">
+          <h2>Pousadas Ativas</h2>
+          <input type="text" v-model="searchInns" placeholder="Pesquise uma Pousada">
+        </div>
+        <div id="space-around">
+          <div v-for="inn in innsResult">
+            <h3><a href="#" @click.prevent="previousPage = currentPage;currentPage = 'inn';innId = inn.id" v-on:click="getRooms(inn.id)">{{inn.brand_name}}</a></h3>
+            <h4>{{inn.city}} - {{inn.state}}</h4>
+          </div>
         </div>
       </div>
+      <!-- /Index -->
+      
+      <!-- Inn -->
+      <div class="container-fluid" v-if="currentPage === 'inn'">
+        <h3 class="page-title">{{selectedInn.brand_name}}</h3>
+        <strong>Endereço: </strong>{{selectedInn.address}} - {{selectedInn.neighborhood}}. {{selectedInn.postal_code}}. {{selectedInn.city}} - {{selectedInn.state}} <br>
+        <strong>Telefone: </strong>{{selectedInn.phone_number}} <br>
+        <strong>E-mail: </strong>{{selectedInn.email}} <br>
+        <strong>Check-in: </strong>{{selectedInn.check_in}} - <strong>Check-out: </strong>{{selectedInn.check_out}} <br>
+        <strong>Aceita pet: </strong>{{selectedInn.pet_friendly}} <br>
+        <strong>Politicas de Uso: </strong>{{selectedInn.usage_policy}} <br>
+        <strong>Métodos de pagamento: </strong>{{selectedInn.payment_methods}} <br>
+        <strong>Nota Média: </strong>{{selectedInnRating}}
+        <div v-if="rooms.length > 0">
+          <h3 id="space-around">Quartos Disponíveis</h3>
+          <div v-for="room in rooms" id="space-around">
+            <div>
+              <h3>{{room.name}}</h3>
+              <h3>{{room.description}}</h3>
+              <strong>Tamanho: </strong>{{room.dimension}}m² <br>
+              <strong>Capacidade: </strong>{{room.capacity}} pessoas <br>
+              <strong>Banheiro Privativo: </strong>{{room.bathroom}} <br>
+              <strong>Sacada: </strong>{{room.balcony}} <br>
+              <strong>Ar-Condicionado: </strong>{{room.ac}} <br>
+              <strong>TV: </strong>{{room.tv}} <br>
+              <strong>Guarda-Roupa: </strong>{{room.wardrobre}} <br>
+              <strong>Cofre: </strong>{{room.safe_box}} <br>
+              <strong>Acessível: </strong>{{room.accessible}} <br>
+              <strong>Diária: </strong>R${{room.price}} <br>
+            </div>
+          </div>
+        </div>
+        <div v-else>
+          <h3>Nenhum Quarto Disponível</h3>
+        </div>
+      </div>
+        <!-- /Inn -->
+      
+      <!-- Room -->
+      <div class="container-fluid" v-if="currentPage === 'Bar'">
+        <h3 class="page-title">{{currentPage}}</h3>
+        Bar section
+      </div>
+      <!-- /Room -->
     </div>
-    <h3>{{rooms}}</h3>
   </div>
-
+  
   <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
   <script src="main.js"></script>
 </body>
+
 </html>
